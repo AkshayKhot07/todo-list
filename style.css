@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+}
+
+header {
+  grid-area: header;
+  background-color: #21f3d4;
+}
+
+aside {
+  grid-area: aside;
+  background-color: #eaee7d;
+}
+
+main {
+  grid-area: main;
+  background-color: pink;
+}
+
+.container {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-areas:
+    "header header header header header header"
+    "aside main main main main main";
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 250px 1fr;
+  gap: 1px;
+}
+
+.container > header,
+.container > main,
+.container > aside {
+  text-align: center;
+  padding: 20px 20px;
+  font-size: 30px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+ul {
+  list-style: none;
+}
+
+.iniTaskBtn {
+  display: flex;
+  flex-direction: column;
+}
+
+.atbContainer {
+  display: grid;
+  grid-template-areas:
+    "textArea textArea textArea"
+    "addTaskBtn cancelBtn .";
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.addTaskBtn {
+  grid-area: addTaskBtn;
+}
+
+.cancelBtn {
+  grid-area: cancelBtn;
+}
+
+.textArea {
+  grid-area: textArea;
+}
+
+/* Tasks List */
+
+li {
+  margin-bottom: 10px;
+}
+
+#newCheckBox {
+  margin: 0px 10px;
+}
