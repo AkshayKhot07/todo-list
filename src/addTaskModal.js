@@ -17,7 +17,7 @@ export const addTaskModal = () => {
     class="textArea"
   ></textarea>
   <button class="addTaskBtn">Add Task</button>
-  <button class="canceTaskBtn">Cancel</button>
+  <button class="cancelTaskBtn">Cancel</button>
 </div>`;
 
   iniTaskBtn.addEventListener("click", function () {
@@ -25,6 +25,11 @@ export const addTaskModal = () => {
     li.innerHTML += atbContainer;
     let addTaskBtn = document.querySelector(".addTaskBtn");
     addTaskBtn.addEventListener("click", taskSubmit.add);
+    let cancelTaskBtn = document.querySelector(".cancelTaskBtn");
+    cancelTaskBtn.addEventListener("click", function () {
+      li.innerHTML = "";
+      li.appendChild(iniTaskBtn);
+    });
   });
 
   return { li };

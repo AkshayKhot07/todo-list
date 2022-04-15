@@ -6,6 +6,9 @@ export const tasks = {
 
   render: (container) => {
     container.appendChild(addTaskModal().li);
+  },
+
+  taskSubscribe: () => {
     pubsub.subscribe("taskAdded", tasks.taskAdded);
   },
 
@@ -14,9 +17,10 @@ export const tasks = {
     let list = new Set(tasks.list);
     list.add(task);
     tasks.list = Array.from(list);
+    console.log(list);
 
-    console.log(`TASKS: tasksUpdated the list`);
-    pubsub.publish("tasksUpdated", tasks.list);
+    // console.log(`TASKS: tasksUpdated the list`);
+    // pubsub.publish("tasksUpdated", tasks.list);
 
     let ul = document.querySelector(".list-container");
     ul.innerHTML = "";
