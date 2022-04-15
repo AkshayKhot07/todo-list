@@ -77,8 +77,20 @@ ul {
 
 li {
   margin-bottom: 10px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+
+input {
+  vertical-align: middle;
 }
 
 #newCheckBox {
   margin: 0px 10px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
