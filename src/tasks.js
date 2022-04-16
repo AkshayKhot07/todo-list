@@ -19,6 +19,8 @@ export const tasks = {
     tasks.list = Array.from(list);
     console.log(list);
 
+    localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);
 
