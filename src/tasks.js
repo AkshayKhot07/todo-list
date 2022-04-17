@@ -6,6 +6,9 @@ export const tasks = {
 
   render: (container) => {
     container.appendChild(addTaskModal().li);
+
+    let ul = document.querySelector(".list-container");
+    ul.addEventListener("click", tasks.taskDeleted);
   },
 
   taskSubscribe: () => {
@@ -43,5 +46,19 @@ export const tasks = {
     tasks.render(df2);
     ul.appendChild(df);
     ul.appendChild(df2);
+  },
+
+  taskDeleted: (ev) => {
+    let item = ev.target.closest("input");
+    if (!item) return;
+    let task = item.parentElement.innerText;
+
+    tasks.list = tasks.list.filter((tsk) => tsk !== task);
+    item.parentElement.parentElement.removeChild(item.parentElement);
+    // console.log(tasks.list);
+
+    localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    console.log(`TASKS: taskDeleted ${task}`);
+    pubsub.publish("taskDeleted", tasks.list);
   },
 };
