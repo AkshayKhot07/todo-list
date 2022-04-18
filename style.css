@@ -76,9 +76,21 @@ ul {
 /* Tasks List */
 
 li {
+  width: 700px;
+  text-align: start;
   margin-bottom: 10px;
+  padding: 5px 0px;
   font-size: 15px;
   vertical-align: middle;
+  border-bottom: 1px solid silver;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+li:last-child {
+  border-bottom: none;
 }
 
 input {
@@ -93,4 +105,22 @@ input {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+p,
+input,
+button {
+  cursor: pointer;
+}
+
+p {
+  display: inline-block;
+}
+
+li .taskTools {
+  visibility: hidden;
+}
+
+li:hover .taskTools {
+  visibility: visible;
 }
