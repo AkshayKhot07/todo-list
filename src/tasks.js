@@ -91,6 +91,7 @@ export const tasks = {
     let li = ev.target.closest("li");
     let taskTextEl = li.querySelector("p");
     let taskText = li.querySelector("p").textContent;
+    const regex = /^.{3,}$/;
 
     li.innerHTML = "";
     li.innerHTML += addTaskModal().atbContainer;
@@ -104,7 +105,12 @@ export const tasks = {
       li.innerHTML = "";
 
       // tasks.taskElement(textArea, li).li;
-      tasks.taskElement(textArea, li);
+      if (textArea.value.match(regex)) {
+        tasks.taskElement(textArea, li);
+      } else {
+        alert("Enter atleast 3 characters");
+        tasks.taskElement(taskTextEl, li);
+      }
 
       let listContainer = document.querySelector(".list-container");
       let allTasks = Array.from(listContainer.querySelectorAll("p"));
