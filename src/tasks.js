@@ -1,6 +1,5 @@
 import { pubsub } from "./pubsub.js";
 import { addTaskModal } from "./addTaskModal.js";
-import { taskSubmit } from "./task-submit.js";
 
 export const tasks = {
   list: [],
@@ -36,6 +35,8 @@ export const tasks = {
 
     tasks.list.forEach((task) => {
       let li = document.createElement("li");
+      tasks.taskElement(task, li);
+      /*
       let div = document.createElement("div");
       div.className = "taskDetails";
       let p = document.createElement("p");
@@ -45,8 +46,6 @@ export const tasks = {
       div.appendChild(newCheckBox);
       //   li.innerText = task;
       li.dataset.taskName = task;
-      // li.setAttribute("contenteditable", "true");
-      // p.setAttribute("contenteditable", "true");
       p.innerText = task;
       // li.append(task);
       div.appendChild(p);
@@ -61,7 +60,7 @@ export const tasks = {
       taskEditBtn.addEventListener("click", tasks.taskEdited);
       taskTools.appendChild(taskEditBtn);
       li.appendChild(taskTools);
-
+      */
       df.appendChild(li);
     });
 
@@ -90,7 +89,7 @@ export const tasks = {
 
   taskEdited: (ev) => {
     let li = ev.target.closest("li");
-
+    let taskTextEl = li.querySelector("p");
     let taskText = li.querySelector("p").textContent;
 
     li.innerHTML = "";
@@ -103,16 +102,10 @@ export const tasks = {
     let addTaskBtn = document.querySelector(".addTaskBtn");
     addTaskBtn.addEventListener("click", () => {
       li.innerHTML = "";
-      li.innerHTML += `
-      <div class="taskDetails">
-      <input type="checkbox" id="newCheckBox">
-      <p>${textArea.value}</p>
-      </div>
-      <div class="taskTools">
-      <button class="taskEditBtn">Edit</button>
-      </div>
-      `;
-      li.dataset.taskName = `${textArea.value}`;
+
+      // tasks.taskElement(textArea, li).li;
+      tasks.taskElement(textArea, li);
+
       let listContainer = document.querySelector(".list-container");
       let allTasks = Array.from(listContainer.querySelectorAll("p"));
 
@@ -126,5 +119,49 @@ export const tasks = {
       console.log(tasks.list);
       localStorage.setItem("tasksList", JSON.stringify(tasks.list));
     });
+
+    let cancelTaskBtn = document.querySelector(".cancelTaskBtn");
+    cancelTaskBtn.addEventListener("click", () => {
+      li.innerHTML = "";
+
+      tasks.taskElement(taskTextEl, li);
+    });
+  },
+
+  taskElement: (el, li) => {
+    let taskContent = document.createElement("div");
+    taskContent.className = "taskDetails";
+    let p = document.createElement("p");
+    let newCheckBox = document.createElement("input");
+    newCheckBox.type = "checkbox";
+    newCheckBox.id = "newCheckBox";
+    taskContent.appendChild(newCheckBox);
+    // console.log(el);
+    // console.log(el.tagName);
+
+    if (el.tagName == "TEXTAREA") {
+      p.innerText = `${el.value}`;
+      li.dataset.taskName = `${el.value}`;
+    } else if (el.tagName == "P") {
+      p.innerText = `${el.innerText}`;
+      li.dataset.taskName = `${el.innerText}`;
+    } else {
+      p.innerText = `${el}`;
+      li.dataset.taskName = `${el}`;
+    }
+
+    taskContent.appendChild(p);
+    li.appendChild(taskContent);
+
+    let taskTools = document.createElement("div");
+    taskTools.className = "taskTools";
+    let taskEditBtn = document.createElement("button");
+    taskEditBtn.textContent = "Edit";
+    taskEditBtn.className = "taskEditBtn";
+    taskEditBtn.addEventListener("click", tasks.taskEdited);
+    taskTools.appendChild(taskEditBtn);
+    li.appendChild(taskTools);
+
+    // return { li };
   },
 };
