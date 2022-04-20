@@ -16,10 +16,10 @@ export const tasks = {
     pubsub.subscribe("taskAdded", tasks.taskAdded);
   },
 
-  taskAdded: (task) => {
-    console.log(`TASKS: ${task} was added`);
+  taskAdded: (obj) => {
+    console.log(`TASKS: ${Object.values(obj)[0]} was added`);
     let list = new Set(tasks.list);
-    list.add(task);
+    list.add(obj);
     tasks.list = Array.from(list);
     console.log(list);
 
@@ -33,34 +33,9 @@ export const tasks = {
     let df = document.createDocumentFragment();
     let df2 = document.createDocumentFragment();
 
-    tasks.list.forEach((task) => {
+    tasks.list.forEach((obj) => {
       let li = document.createElement("li");
-      tasks.taskElement(task, li);
-      /*
-      let div = document.createElement("div");
-      div.className = "taskDetails";
-      let p = document.createElement("p");
-      let newCheckBox = document.createElement("input");
-      newCheckBox.type = "checkbox";
-      newCheckBox.id = "newCheckBox";
-      div.appendChild(newCheckBox);
-      //   li.innerText = task;
-      li.dataset.taskName = task;
-      p.innerText = task;
-      // li.append(task);
-      div.appendChild(p);
-      li.appendChild(div);
-
-      //Taks tools div
-      let taskTools = document.createElement("div");
-      taskTools.className = "taskTools";
-      let taskEditBtn = document.createElement("button");
-      taskEditBtn.textContent = "Edit";
-      taskEditBtn.className = "taskEditBtn";
-      taskEditBtn.addEventListener("click", tasks.taskEdited);
-      taskTools.appendChild(taskEditBtn);
-      li.appendChild(taskTools);
-      */
+      tasks.taskElement(obj, li);
       df.appendChild(li);
     });
 
@@ -70,17 +45,16 @@ export const tasks = {
   },
 
   taskDeleted: (ev) => {
-    let item = ev.target.closest("input");
+    let item = ev.target.closest("input[type=checkbox]");
     if (!item) return;
     // let task = item.parentElement.innerText;
     let task = item.nextElementSibling.innerText;
     // console.log(`TEST: ${task}`);
 
-    tasks.list = tasks.list.filter((tsk) => tsk !== task);
+    tasks.list = tasks.list.filter((tsk) => Object.values(tsk)[0] !== task);
     item.parentElement.parentElement.parentElement.removeChild(
       item.parentElement.parentElement
     );
-    // console.log(tasks.list);
 
     localStorage.setItem("tasksList", JSON.stringify(tasks.list));
     console.log(`TASKS: taskDeleted ${task}`);
@@ -93,6 +67,9 @@ export const tasks = {
     let taskText = li.querySelector("p").textContent;
     const regex = /^.{3,}$/;
 
+    let taskDate = document.querySelector(".taskDate");
+    let date = taskDate.textContent;
+
     li.innerHTML = "";
     li.innerHTML += addTaskModal().atbContainer;
 
@@ -100,27 +77,41 @@ export const tasks = {
     textArea.innerText = taskText;
     console.log(textArea);
 
+    let objtaskTextEl = { taskTextEl, date };
+
     let addTaskBtn = document.querySelector(".addTaskBtn");
     addTaskBtn.addEventListener("click", () => {
+      //Get current date value
+      let datePicker = document.querySelector(".datePicker");
+      let datePickerValue = datePicker.value;
       li.innerHTML = "";
 
       // tasks.taskElement(textArea, li).li;
       if (textArea.value.match(regex)) {
-        tasks.taskElement(textArea, li);
+        // tasks.taskElement(textArea, li)
+        let objtextArea = { textArea, date: datePickerValue };
+        console.log(objtextArea);
+        tasks.taskElement(objtextArea, li);
       } else {
         alert("Enter atleast 3 characters");
-        tasks.taskElement(taskTextEl, li);
+        // tasks.taskElement(taskTextEl, li);
+        tasks.taskElement(objtaskTextEl, li);
       }
 
       let listContainer = document.querySelector(".list-container");
       let allTasks = Array.from(listContainer.querySelectorAll("p"));
+      let allTasksDates = Array.from(
+        listContainer.querySelectorAll(".taskDate")
+      );
 
       tasks.list = [];
 
-      allTasks.forEach((p) => {
-        console.log(p.innerText);
-        tasks.list.push(p.innerText);
-      });
+      allTasks.forEach((task, i) =>
+        tasks.list.push({
+          task: task.innerText,
+          date: allTasksDates[i].textContent,
+        })
+      );
 
       console.log(tasks.list);
       localStorage.setItem("tasksList", JSON.stringify(tasks.list));
@@ -130,11 +121,11 @@ export const tasks = {
     cancelTaskBtn.addEventListener("click", () => {
       li.innerHTML = "";
 
-      tasks.taskElement(taskTextEl, li);
+      tasks.taskElement(objtaskTextEl, li);
     });
   },
 
-  taskElement: (el, li) => {
+  taskElement: (obj, li) => {
     let taskContent = document.createElement("div");
     taskContent.className = "taskDetails";
     let p = document.createElement("p");
@@ -142,18 +133,16 @@ export const tasks = {
     newCheckBox.type = "checkbox";
     newCheckBox.id = "newCheckBox";
     taskContent.appendChild(newCheckBox);
-    // console.log(el);
-    // console.log(el.tagName);
 
-    if (el.tagName == "TEXTAREA") {
-      p.innerText = `${el.value}`;
-      li.dataset.taskName = `${el.value}`;
-    } else if (el.tagName == "P") {
-      p.innerText = `${el.innerText}`;
-      li.dataset.taskName = `${el.innerText}`;
+    if (Object.keys(obj)[0] == "textArea") {
+      p.innerText = `${Object.values(obj)[0].value}`;
+      li.dataset.taskName = `${Object.values(obj)[0].value}`;
+    } else if (Object.keys(obj)[0] == "taskTextEl") {
+      p.innerText = `${Object.values(obj)[0].innerText}`;
+      li.dataset.taskName = `${Object.values(obj)[0].innerText}`;
     } else {
-      p.innerText = `${el}`;
-      li.dataset.taskName = `${el}`;
+      p.innerText = `${Object.values(obj)[0]}`;
+      li.dataset.taskName = `${Object.values(obj)[0]}`;
     }
 
     taskContent.appendChild(p);
@@ -161,11 +150,22 @@ export const tasks = {
 
     let taskTools = document.createElement("div");
     taskTools.className = "taskTools";
+
+    let taskDate = document.createElement("div");
+    taskDate.className = "taskDate";
+    if (Object.values(obj)[1] == "") {
+      taskDate.innerText = "No Date";
+    } else {
+      taskDate.innerText = Object.values(obj)[1];
+    }
+    taskTools.appendChild(taskDate);
+
     let taskEditBtn = document.createElement("button");
     taskEditBtn.textContent = "Edit";
     taskEditBtn.className = "taskEditBtn";
     taskEditBtn.addEventListener("click", tasks.taskEdited);
     taskTools.appendChild(taskEditBtn);
+
     li.appendChild(taskTools);
 
     // return { li };

@@ -13,7 +13,11 @@ export const pubsub = {
     }
   },
   publish: function (evName, data) {
-    console.log(`PUBSUB: Making an broadcast about ${evName} with ${data}`);
+    console.log(
+      `PUBSUB: Making an broadcast about ${evName} with ${
+        Object.values(data)[0]
+      }`
+    );
     if (this.events[evName]) {
       this.events[evName].forEach((f) => {
         f(data);

@@ -6,9 +6,16 @@ export const taskSubmit = {
     let task = textArea.value.trim();
     textArea.value = "";
     const regex = /^.{3,}$/;
+
+    let datePicker = document.querySelector(".datePicker");
+    let date = datePicker.value;
+
+    let obj = { task, date };
+    console.log(obj);
+
     if (task.match(regex)) {
-      console.log(`TASK SUBMIT: ${task}`);
-      pubsub.publish("taskAdded", task);
+      console.log(`TASK SUBMIT: ${task} ${date}`);
+      pubsub.publish("taskAdded", obj);
     } else {
       alert("Enter atleast 3 characters");
     }

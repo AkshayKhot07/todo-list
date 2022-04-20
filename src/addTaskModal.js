@@ -1,4 +1,5 @@
 import { taskSubmit } from "./task-submit.js";
+import { tasks } from "./tasks.js";
 
 export const addTaskModal = () => {
   let li = document.createElement("li");
@@ -9,6 +10,7 @@ export const addTaskModal = () => {
   li.appendChild(iniTaskBtn);
 
   const atbContainer = `<div class="atbContainer">
+  <div class=taskTextDate>
   <textarea
     name="task"
     id="task"
@@ -16,6 +18,8 @@ export const addTaskModal = () => {
     rows="5"
     class="textArea"
   ></textarea>
+  <input type="date" id="datePicker" class="datePicker" name="datePicker">
+  </div>
   <button class="addTaskBtn">Add Task</button>
   <button class="cancelTaskBtn">Cancel</button>
 </div>`;
