@@ -55,10 +55,15 @@ ul {
 .atbContainer {
   display: grid;
   grid-template-areas:
-    "textArea textArea textArea"
+    "taskTextDate taskTextDate taskTextDate"
     "addTaskBtn cancelBtn .";
   gap: 10px;
   margin-top: 10px;
+}
+
+.taskTextDate {
+  border: 1px solid grey;
+  padding: 2px;
 }
 
 .addTaskBtn {
@@ -69,8 +74,16 @@ ul {
   grid-area: cancelBtn;
 }
 
+.datePicker {
+  grid-area: datePicker;
+}
+
 .textArea {
   grid-area: textArea;
+}
+
+.taskTextDate {
+  grid-area: taskTextDate;
 }
 
 /* Tasks List */
@@ -117,10 +130,29 @@ p {
   display: inline-block;
 }
 
-li .taskTools {
+li .taskEditBtn {
   visibility: hidden;
+  margin-left: 10px;
 }
 
-li:hover .taskTools {
+li:hover .taskEditBtn {
   visibility: visible;
+  margin-left: 10px;
+}
+
+.taskTools {
+  display: flex;
+}
+
+/* Aside */
+.inbox-btn {
+  width: 10rem;
+  padding: 5px;
+  text-align: start;
+  background-color: #eaee7d;
+  border: none;
+}
+
+.inbox-btn:hover {
+  background-color: aliceblue;
 }
