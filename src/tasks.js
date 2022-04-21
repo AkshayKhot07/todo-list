@@ -18,12 +18,22 @@ export const tasks = {
 
   taskAdded: (obj) => {
     console.log(`TASKS: ${Object.values(obj)[0]} was added`);
-    let list = new Set(tasks.list);
-    list.add(obj);
-    tasks.list = Array.from(list);
-    console.log(list);
+    // let list = new Set(tasks.list);
+    let list = tasks.list;
+    list.push(obj);
 
-    localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    let filteredList = list.filter(
+      (tag, index, array) =>
+        array.findIndex((t) => t.task == tag.task && t.date == tag.date) ==
+        index
+    );
+
+    tasks.list = filteredList;
+
+    console.log(filteredList);
+
+    // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    localStorage.setItem("tasksList", JSON.stringify(filteredList));
 
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);

@@ -47,6 +47,11 @@ ul {
   list-style: none;
 }
 
+.list-header {
+  margin-left: 50px;
+  margin-bottom: 20px;
+}
+
 .iniTaskBtn {
   display: flex;
   flex-direction: column;
@@ -145,14 +150,23 @@ li:hover .taskEditBtn {
 }
 
 /* Aside */
-.inbox-btn {
+
+aside button {
+  background-color: #eaee7d;
+}
+
+aside button:hover {
+  background-color: aliceblue;
+}
+
+.inbox-btn,
+.today-btn {
   width: 10rem;
   padding: 5px;
   text-align: start;
-  background-color: #eaee7d;
   border: none;
 }
 
-.inbox-btn:hover {
+.tabSelectedColor {
   background-color: aliceblue;
 }
