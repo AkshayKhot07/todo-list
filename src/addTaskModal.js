@@ -27,6 +27,8 @@ export const addTaskModal = () => {
   iniTaskBtn.addEventListener("click", function () {
     li.innerHTML = "";
     li.innerHTML += atbContainer;
+    let datePicker = document.querySelector(".datePicker");
+    datePicker.min = new Date().toISOString().split("T")[0];
     let addTaskBtn = document.querySelector(".addTaskBtn");
     addTaskBtn.addEventListener("click", taskSubmit.add);
     let cancelTaskBtn = document.querySelector(".cancelTaskBtn");

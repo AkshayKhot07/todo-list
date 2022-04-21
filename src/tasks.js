@@ -67,7 +67,7 @@ export const tasks = {
     let taskText = li.querySelector("p").textContent;
     const regex = /^.{3,}$/;
 
-    let taskDate = document.querySelector(".taskDate");
+    let taskDate = li.querySelector(".taskDate");
     let date = taskDate.textContent;
 
     li.innerHTML = "";
@@ -79,10 +79,13 @@ export const tasks = {
 
     let objtaskTextEl = { taskTextEl, date };
 
+    let datePicker = document.querySelector(".datePicker");
+    datePicker.value = date;
+    datePicker.min = new Date().toISOString().split("T")[0];
+
     let addTaskBtn = document.querySelector(".addTaskBtn");
     addTaskBtn.addEventListener("click", () => {
       //Get current date value
-      let datePicker = document.querySelector(".datePicker");
       let datePickerValue = datePicker.value;
       li.innerHTML = "";
 
