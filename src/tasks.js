@@ -58,16 +58,35 @@ export const tasks = {
     let item = ev.target.closest("input[type=checkbox]");
     if (!item) return;
     // let task = item.parentElement.innerText;
-    let task = item.nextElementSibling.innerText;
+    let taskText = item.nextElementSibling.innerText;
+    let taskDate = ev.target.closest("li").querySelector(".taskDate").innerText;
+    console.log(taskText);
+    console.log(taskDate);
     // console.log(`TEST: ${task}`);
 
-    tasks.list = tasks.list.filter((tsk) => Object.values(tsk)[0] !== task);
+    // tasks.list = tasks.list.filter((tsk) => {
+    //   console.log(
+    //     `${Object.values(tsk)[0].trim()} and ${Object.values(tsk)[1].trim()}`
+    //   );
+    //   return (
+    //     Object.values(tsk)[0].trim() !== taskText.trim() &&
+    //     Object.values(tsk)[1].trim() !== taskDate.trim()
+    //   );
+    // });
+
+    tasks.list = tasks.list.filter(
+      // (t) => !(t.task == taskText && t.date == taskDate)
+      (t) => !(t.task.includes(taskText) && t.date.includes(taskDate))
+    );
+
     item.parentElement.parentElement.parentElement.removeChild(
       item.parentElement.parentElement
     );
 
+    console.log(tasks.list);
+
     localStorage.setItem("tasksList", JSON.stringify(tasks.list));
-    console.log(`TASKS: taskDeleted ${task}`);
+    console.log(`TASKS: taskDeleted ${taskText}`);
     pubsub.publish("taskDeleted", tasks.list);
   },
 
