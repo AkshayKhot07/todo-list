@@ -130,6 +130,38 @@ export const tasks = {
         tasks.taskElement(objtaskTextEl, li);
       }
 
+      //// Edit Task date on todays tab
+      let listContainer = document.querySelector(".list-container");
+      let todayBtn = document.querySelector(".today-btn");
+      if (todayBtn.classList.contains("tabSelectedColor")) {
+        let allTask = Array.from(listContainer.querySelectorAll("li"));
+        console.log(allTask);
+        listContainer.innerHTML = "";
+
+        for (let i = 0; i < allTask.length; i++) {
+          let task = allTask[i];
+          let taskDate = allTask[i].querySelector(".taskDate").innerText;
+
+          console.log(task);
+          console.log(taskDate);
+
+          let today = new Date();
+          let todayDate =
+            today.getFullYear() +
+            "-" +
+            ("0" + (today.getMonth() + 1)).slice(-2) +
+            "-" +
+            ("0" + today.getDate()).slice(-2);
+          console.log(todayDate);
+
+          if (taskDate == todayDate) {
+            listContainer.appendChild(task);
+          }
+        }
+      }
+      //// Edit Task date on todays tab
+
+      /* Previous Code
       let listContainer = document.querySelector(".list-container");
       let allTasks = Array.from(listContainer.querySelectorAll("p"));
       let allTasksDates = Array.from(
@@ -144,6 +176,16 @@ export const tasks = {
           date: allTasksDates[i].textContent,
         })
       );
+      */
+
+      console.log(tasks.list);
+
+      tasks.list.forEach((obj) => {
+        if (obj.task === taskText && obj.date === taskDate.textContent) {
+          obj.task = textArea.value;
+          obj.date = datePickerValue;
+        }
+      });
 
       console.log(tasks.list);
       localStorage.setItem("tasksList", JSON.stringify(tasks.list));

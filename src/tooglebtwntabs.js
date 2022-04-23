@@ -10,7 +10,36 @@ export const toggleBtwnTabs = () => {
     inboxBtn.classList.remove("tabSelectedColor");
     todayBtn.classList.add("tabSelectedColor");
     listHeader.innerText = "Today";
+
+    let allTask = Array.from(listContainer.querySelectorAll("li"));
     listContainer.innerHTML = "";
+
+    console.log(allTask);
+
+    for (let i = 0; i < allTask.length - 1; i++) {
+      let task = allTask[i];
+      let taskDate = allTask[i].querySelector(".taskDate").innerText;
+
+      console.log(task);
+      console.log(taskDate);
+
+      let today = new Date();
+      let todayDate =
+        today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + today.getDate()).slice(-2);
+      console.log(todayDate);
+
+      if (taskDate === todayDate) {
+        // console.log(task);
+        let todayTask = task;
+        console.log(todayTask);
+        listContainer.appendChild(todayTask);
+        // listContainer.innerHTML += todayTaks;
+      }
+    }
   });
 
   inboxBtn.addEventListener("click", () => {
