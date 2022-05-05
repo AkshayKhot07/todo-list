@@ -1,5 +1,6 @@
 import { pubsub } from "./pubsub.js";
 import { addTaskModal } from "./addTaskModal.js";
+import { whichWeek, currentWeek } from "./week.js";
 
 export const tasks = {
   list: [],
@@ -160,6 +161,32 @@ export const tasks = {
         }
       }
       //// Edit Task date on todays tab
+
+      //// Edit Task date on thisweek's tab
+      // let listContainer = document.querySelector(".list-container");
+      let thisweekBtn = document.querySelector(".thisweek-btn");
+      if (thisweekBtn.classList.contains("tabSelectedColor")) {
+        let allTask = Array.from(listContainer.querySelectorAll("li"));
+        console.log(allTask);
+        listContainer.innerHTML = "";
+
+        for (let i = 0; i < allTask.length; i++) {
+          let task = allTask[i];
+          let taskDate = whichWeek(
+            allTask[i].querySelector(".taskDate").innerText
+          );
+
+          console.log(task);
+          console.log(taskDate);
+
+          let currWeek = currentWeek();
+
+          if (taskDate == currWeek) {
+            listContainer.appendChild(task);
+          }
+        }
+      }
+      //// Edit Task date on thisweek's tab
 
       /* Previous Code
       let listContainer = document.querySelector(".list-container");
