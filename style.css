@@ -160,7 +160,8 @@ aside button:hover {
 }
 
 .inbox-btn,
-.today-btn {
+.today-btn,
+.thisweek-btn {
   width: 10rem;
   padding: 5px;
   text-align: start;
