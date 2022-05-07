@@ -34,7 +34,23 @@ export const tasks = {
     console.log(filteredList);
 
     // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
-    localStorage.setItem("tasksList", JSON.stringify(filteredList));
+    // localStorage.setItem("tasksList", JSON.stringify(filteredList));
+    //Revamp
+    let inboxBtn = document.querySelector(".inbox-btn");
+    if (inboxBtn.classList.contains("tabSelectedColor")) {
+      localStorage.setItem(
+        "tasksList",
+        JSON.stringify({
+          projects: [
+            {
+              name: "Inbox",
+              tasks: filteredList,
+            },
+          ],
+        })
+      );
+    }
+    //Revamp
 
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);
@@ -86,7 +102,20 @@ export const tasks = {
 
     console.log(tasks.list);
 
-    localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    //Revamp
+    localStorage.setItem(
+      "tasksList",
+      JSON.stringify({
+        projects: [
+          {
+            name: "Inbox",
+            tasks: tasks.list,
+          },
+        ],
+      })
+    );
+    //Revamp
     console.log(`TASKS: taskDeleted ${taskText}`);
     pubsub.publish("taskDeleted", tasks.list);
   },
@@ -215,7 +244,20 @@ export const tasks = {
       });
 
       console.log(tasks.list);
-      localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+      // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+      //Revamp
+      localStorage.setItem(
+        "tasksList",
+        JSON.stringify({
+          projects: [
+            {
+              name: "Inbox",
+              tasks: tasks.list,
+            },
+          ],
+        })
+      );
+      //Revamp
     });
 
     let cancelTaskBtn = document.querySelector(".cancelTaskBtn");
