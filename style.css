@@ -1,5 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Open+Sans&family=Poppins:wght@200&family=Roboto:wght@100;300&family=Water+Brush&display=swap");
+
 * {
   margin: 0;
+  font-family: "Open Sans", sans-serif;
 }
 
 header {
@@ -170,4 +173,64 @@ aside button:hover {
 
 .tabSelectedColor {
   background-color: aliceblue;
+}
+
+/* Project Section */
+.projects-heading h4 {
+  margin: 20px 45px 10px 0;
+}
+
+.add-project-btn {
+  width: 10rem;
+  padding: 5px;
+  text-align: start;
+  border: none;
+}
+
+.projects-task-addBtn {
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #26ed49;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
+
+.projects-task-cancelBtn {
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #ff5b5b;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
+
+.projects-task-modal {
+  display: grid;
+  grid-template-areas:
+    "projectsInput projectsInput"
+    "projectsAddBtn projectsCancelBtn";
+  gap: 10px;
+}
+
+.projects-task-input {
+  grid-area: projectsInput;
+}
+
+.projects-task-addBtn {
+  grid-area: projectsAddBtn;
+}
+
+.projects-task-cancelBtn {
+  grid-area: projectsCancelBtn;
+}
+
+.projects-task {
+  font-size: 15px;
+  text-align: start;
+  margin-left: 25px;
+
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
