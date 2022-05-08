@@ -1,6 +1,7 @@
 import { tasks } from "./tasks.js";
 import { taskslistLocalStorage } from "./taskslistLS";
 import { toggleBtwnTabs } from "./tooglebtwntabs";
+import { projectTasks, projectTasksFn } from "./projects.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   let listContainer = document.querySelector(".list-container");
@@ -11,4 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let inboxBtn = document.querySelector(".inbox-btn");
   inboxBtn.classList.add("tabSelectedColor");
+
+  projectTasksFn();
 });
