@@ -229,8 +229,17 @@ aside button:hover {
   font-size: 15px;
   text-align: start;
   margin-left: 25px;
+  margin-bottom: 10px;
 
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.projects-task-cancel {
+  visibility: hidden;
+}
+
+.projects-task:hover .projects-task-cancel {
+  visibility: visible;
 }

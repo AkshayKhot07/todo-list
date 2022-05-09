@@ -10,7 +10,17 @@ export const projectTasksFn = () => {
   addProjectBtn.classList.add("add-project-btn");
   addProjectBtn.append("➕ Add Project");
 
-  projectsTaskList.appendChild(addProjectBtn);
+  let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+  if (tasksList == null) {
+    projectsTaskList.appendChild(addProjectBtn);
+  } else {
+    tasksList.projects.forEach((obj) => {
+      if (obj.name !== "Inbox") {
+        projTaskArr.push(obj.name);
+      }
+    });
+    projectsTaskList.appendChild(addProjectBtn);
+  }
 
   let projectsTaskModal = `
   <div class="projects-task-modal">
@@ -42,8 +52,11 @@ export const projectTasksFn = () => {
         for (let i = 0; i < projTaskArr.length; i++) {
           projectsTaskList.innerHTML += renderProjectsTasks(projTaskArr[i]);
         }
+        projectsTaskList.appendChild(addProjectBtn);
+      } else {
+        projectsTaskList.innerHTML = "";
+        projectsTaskList.appendChild(addProjectBtn);
       }
-      projectsTaskList.appendChild(addProjectBtn);
     });
 
     let projectsTaskAdd = document.querySelector(".projects-task-addBtn");
@@ -51,22 +64,45 @@ export const projectTasksFn = () => {
 
     projectsTaskAdd.addEventListener("click", () => {
       let projectsTaskInputValue = projectsTaskInput.value;
+      if (projectsTaskInputValue == "") return;
       projTaskArr.push(projectsTaskInputValue);
       console.log(projTaskArr);
+
+      //Local Storage
+      let obj = {
+        name: projectsTaskInputValue,
+        tasks: [],
+      };
+
+      let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+      if (tasksList == null) {
+        localStorage.setItem(
+          "tasksList",
+          JSON.stringify({
+            projects: [obj],
+          })
+        );
+      } else {
+        tasksList.projects.push(obj);
+        console.log(projTaskArr);
+        console.log(tasksList.projects);
+        localStorage.setItem("tasksList", JSON.stringify(tasksList));
+      }
 
       if (projTaskArr.length > 0) {
         projectsTaskList.innerHTML = "";
         for (let i = 0; i < projTaskArr.length; i++) {
           projectsTaskList.innerHTML += renderProjectsTasks(projTaskArr[i]);
         }
+        projectsTaskList.appendChild(addProjectBtn);
+      } else {
+        projectsTaskList.appendChild(addProjectBtn);
       }
-
-      projectsTaskList.appendChild(addProjectBtn);
     });
   });
 };
 
-function renderProjectsTasks(task) {
+export function renderProjectsTasks(task) {
   let renderTaskHtml = `
   <div class="projects-task">
    <div class="projects-task-text">📑 ${task}</div>
@@ -75,4 +111,13 @@ function renderProjectsTasks(task) {
   `;
 
   return renderTaskHtml;
+}
+
+export function checkNameNotInbox(obj) {
+  let projArr = obj.projects;
+  projArr.forEach((obj) => {
+    if (obj.name !== "Inbox") {
+      return true;
+    }
+  });
 }

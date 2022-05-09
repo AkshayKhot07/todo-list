@@ -1,6 +1,7 @@
 import { pubsub } from "./pubsub.js";
 import { addTaskModal } from "./addTaskModal.js";
 import { whichWeek, currentWeek } from "./week.js";
+import { checkNameNotInbox } from "./projects.js";
 
 export const tasks = {
   list: [],
@@ -38,17 +39,42 @@ export const tasks = {
     //Revamp
     let inboxBtn = document.querySelector(".inbox-btn");
     if (inboxBtn.classList.contains("tabSelectedColor")) {
-      localStorage.setItem(
-        "tasksList",
-        JSON.stringify({
-          projects: [
-            {
+      let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+      if (tasksList == null) {
+        localStorage.setItem(
+          "tasksList",
+          JSON.stringify({
+            projects: [
+              {
+                name: "Inbox",
+                tasks: filteredList,
+              },
+            ],
+          })
+        );
+      } else {
+        let projArr = tasksList.projects;
+        console.log(filteredList);
+
+        projArr.forEach((obj) => {
+          if (obj.name == "Inbox") {
+            // obj.tasks.push(filteredList);
+            obj.tasks = filteredList;
+          } else if (obj.name !== "Inbox") {
+            projArr.push({
               name: "Inbox",
               tasks: filteredList,
-            },
-          ],
-        })
-      );
+            });
+          }
+        });
+
+        tasksList.projects = tasksList.projects.filter(
+          (value, index, self) =>
+            index === self.findIndex((t) => t.name === value.name)
+        );
+
+        localStorage.setItem("tasksList", JSON.stringify(tasksList));
+      }
     }
     //Revamp
 
@@ -103,6 +129,16 @@ export const tasks = {
     console.log(tasks.list);
 
     // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+    let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+    let projArr = tasksList.projects;
+    projArr.forEach((obj) => {
+      if (obj.name == "Inbox") {
+        obj.tasks = tasks.list;
+      }
+    });
+    localStorage.setItem("tasksList", JSON.stringify(tasksList));
+
+    /*
     //Revamp
     localStorage.setItem(
       "tasksList",
@@ -116,6 +152,7 @@ export const tasks = {
       })
     );
     //Revamp
+    */
     console.log(`TASKS: taskDeleted ${taskText}`);
     pubsub.publish("taskDeleted", tasks.list);
   },
@@ -245,6 +282,15 @@ export const tasks = {
 
       console.log(tasks.list);
       // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
+      let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+      let projArr = tasksList.projects;
+      projArr.forEach((obj) => {
+        if (obj.name == "Inbox") {
+          obj.tasks = tasks.list;
+        }
+      });
+      localStorage.setItem("tasksList", JSON.stringify(tasksList));
+      /*
       //Revamp
       localStorage.setItem(
         "tasksList",
@@ -258,6 +304,7 @@ export const tasks = {
         })
       );
       //Revamp
+      */
     });
 
     let cancelTaskBtn = document.querySelector(".cancelTaskBtn");
