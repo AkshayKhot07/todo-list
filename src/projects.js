@@ -37,6 +37,14 @@ export const projectTasksFn = () => {
       projectsTaskList.innerHTML = "";
       for (let i = 0; i < projTaskArr.length; i++) {
         projectsTaskList.innerHTML += renderProjectsTasks(projTaskArr[i]);
+        //Delete Projects Task
+        let projectsTaskCancelBtns = Array.from(
+          document.querySelectorAll(".projects-task-cancel")
+        );
+        projectsTaskCancelBtns.forEach((projtask) => {
+          let projectsTaskCancelBtn = projtask;
+          projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
+        });
       }
       projectsTaskList.innerHTML += projectsTaskModal;
     } else {
@@ -51,6 +59,14 @@ export const projectTasksFn = () => {
         projectsTaskList.innerHTML = "";
         for (let i = 0; i < projTaskArr.length; i++) {
           projectsTaskList.innerHTML += renderProjectsTasks(projTaskArr[i]);
+          //Delete Projects Task
+          let projectsTaskCancelBtns = Array.from(
+            document.querySelectorAll(".projects-task-cancel")
+          );
+          projectsTaskCancelBtns.forEach((projtask) => {
+            let projectsTaskCancelBtn = projtask;
+            projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
+          });
         }
         projectsTaskList.appendChild(addProjectBtn);
       } else {
@@ -93,6 +109,14 @@ export const projectTasksFn = () => {
         projectsTaskList.innerHTML = "";
         for (let i = 0; i < projTaskArr.length; i++) {
           projectsTaskList.innerHTML += renderProjectsTasks(projTaskArr[i]);
+          //Delete Projects Task
+          let projectsTaskCancelBtns = Array.from(
+            document.querySelectorAll(".projects-task-cancel")
+          );
+          projectsTaskCancelBtns.forEach((projtask) => {
+            let projectsTaskCancelBtn = projtask;
+            projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
+          });
         }
         projectsTaskList.appendChild(addProjectBtn);
       } else {
@@ -100,6 +124,36 @@ export const projectTasksFn = () => {
       }
     });
   });
+
+  //Delete Projects Task
+  let projectsTaskCancelBtns = Array.from(
+    document.querySelectorAll(".projects-task-cancel")
+  );
+  projectsTaskCancelBtns.forEach((projtask) => {
+    let projectsTaskCancelBtn = projtask;
+    projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
+  });
+
+  function deleteProjectsTask(e) {
+    if (e.target.className == "projects-task-cancel") {
+      let item = e.target.closest("div");
+      let itemSibling = item.previousElementSibling.innerText
+        .replace("📑", "")
+        .trim();
+      console.log(itemSibling);
+      let itemParent = item.parentNode.remove();
+      projTaskArr.splice(itemSibling, 1);
+      console.log(projTaskArr);
+      let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+      tasksList.projects = tasksList.projects.filter((obj) => {
+        return obj.name !== itemSibling;
+      });
+      console.log(tasksList);
+      localStorage.setItem("tasksList", JSON.stringify(tasksList));
+    }
+  }
+
+  // deleteProjectsTask();
 };
 
 export function renderProjectsTasks(task) {
