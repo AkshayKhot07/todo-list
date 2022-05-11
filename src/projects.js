@@ -1,3 +1,5 @@
+import { taskslistLocalStorage } from "./taskslistLS";
+
 export const projectTasksFn = () => {
   let projectsTaskList = document.querySelector(".projects-task-list");
   let projTaskArr = [];
@@ -117,6 +119,8 @@ export const projectTasksFn = () => {
             let projectsTaskCancelBtn = projtask;
             projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
           });
+          //Select Project Task
+          selectProjectTask();
         }
         projectsTaskList.appendChild(addProjectBtn);
       } else {
@@ -136,13 +140,25 @@ export const projectTasksFn = () => {
 
   function deleteProjectsTask(e) {
     if (e.target.className == "projects-task-cancel") {
+      let inboxBtn = document.querySelector(".inbox-btn");
       let item = e.target.closest("div");
       let itemSibling = item.previousElementSibling.innerText
         .replace("📑", "")
         .trim();
       console.log(itemSibling);
-      let itemParent = item.parentNode.remove();
-      projTaskArr.splice(itemSibling, 1);
+      let itemParent = item.parentNode;
+      if (itemParent.classList.contains("tabSelectedColor")) {
+        itemParent.classList.remove("tabSelectedColor");
+        inboxBtn.classList.add("tabSelectedColor");
+        taskslistLocalStorage();
+        let listHeader = document.querySelector(".list-header");
+        listHeader.innerText = "Inbox";
+      }
+      itemParent.remove();
+      let itemSiblingIndex = projTaskArr.indexOf(itemSibling);
+      if (itemSiblingIndex > -1) {
+        projTaskArr.splice(itemSiblingIndex, 1);
+      }
       console.log(projTaskArr);
       let tasksList = JSON.parse(localStorage.getItem("tasksList"));
       tasksList.projects = tasksList.projects.filter((obj) => {
@@ -150,11 +166,37 @@ export const projectTasksFn = () => {
       });
       console.log(tasksList);
       localStorage.setItem("tasksList", JSON.stringify(tasksList));
+      //Select Project Task
+      selectProjectTask();
     }
   }
 
-  // deleteProjectsTask();
+  //Select projects Task
+  selectProjectTask();
 };
+
+export function selectProjectTask() {
+  let projectsTaskList = document.querySelector(".projects-task-list");
+  let allProjectsTasks = Array.from(
+    projectsTaskList.querySelectorAll(".projects-task")
+  );
+  console.log(allProjectsTasks);
+  allProjectsTasks.forEach((projTask) => {
+    let projectTask = projTask;
+    projectTask.addEventListener("click", (e) => {
+      if (e.target.classList.contains("projects-task-text")) {
+        let aside = document.querySelector("aside");
+        let asideAllButtons = aside.querySelectorAll("button");
+        let asideAllDivs = aside.querySelectorAll("div");
+        asideAllButtons.forEach((b) => b.classList.remove("tabSelectedColor"));
+        asideAllDivs.forEach((d) => d.classList.remove("tabSelectedColor"));
+        let currProjectTask = projTask;
+        currProjectTask.classList.add("tabSelectedColor");
+        console.log(currProjectTask);
+      }
+    });
+  });
+}
 
 export function renderProjectsTasks(task) {
   let renderTaskHtml = `

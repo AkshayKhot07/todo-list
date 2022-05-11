@@ -2,6 +2,7 @@ import { taskslistLocalStorage } from "./taskslistLS";
 import { addTaskModal } from "./addTaskModal.js";
 import { whichWeek, currentWeek } from "./week.js";
 import { tasks } from "./tasks.js";
+import { selectProjectTask } from "./projects.js";
 
 export const toggleBtwnTabs = () => {
   let listContainer = document.querySelector(".list-container");
@@ -12,42 +13,17 @@ export const toggleBtwnTabs = () => {
 
   // Today's tasks
   todayBtn.addEventListener("click", () => {
-    inboxBtn.classList.remove("tabSelectedColor");
-    thisweekBtn.classList.remove("tabSelectedColor");
+    // inboxBtn.classList.remove("tabSelectedColor");
+    // thisweekBtn.classList.remove("tabSelectedColor");
+    let aside = document.querySelector("aside");
+    let asideAllButtons = aside.querySelectorAll("button");
+    let asideAllDivs = aside.querySelectorAll("div");
+    asideAllButtons.forEach((b) => b.classList.remove("tabSelectedColor"));
+    asideAllDivs.forEach((d) => d.classList.remove("tabSelectedColor"));
     todayBtn.classList.add("tabSelectedColor");
     listHeader.innerText = "Today";
 
     listContainer.innerHTML = "";
-
-    /* Old Code
-    let allTask = Array.from(listContainer.querySelectorAll("li"));
-    console.log(allTask);
-
-    for (let i = 0; i < allTask.length - 1; i++) {
-      let task = allTask[i];
-      let taskDate = allTask[i].querySelector(".taskDate").innerText;
-
-      console.log(task);
-      console.log(taskDate);
-
-      let today = new Date();
-      let todayDate =
-        today.getFullYear() +
-        "-" +
-        ("0" + (today.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + today.getDate()).slice(-2);
-      console.log(todayDate);
-
-      if (taskDate === todayDate) {
-        // console.log(task);
-        let todayTask = task;
-        console.log(todayTask);
-        listContainer.appendChild(todayTask);
-        // listContainer.innerHTML += todayTaks;
-      }
-    }
-    Old Code */
 
     //New Code
     let today = new Date();
@@ -96,8 +72,13 @@ export const toggleBtwnTabs = () => {
 
   //Week's tasks
   thisweekBtn.addEventListener("click", () => {
-    inboxBtn.classList.remove("tabSelectedColor");
-    todayBtn.classList.remove("tabSelectedColor");
+    // inboxBtn.classList.remove("tabSelectedColor");
+    // todayBtn.classList.remove("tabSelectedColor");
+    let aside = document.querySelector("aside");
+    let asideAllButtons = aside.querySelectorAll("button");
+    let asideAllDivs = aside.querySelectorAll("div");
+    asideAllButtons.forEach((b) => b.classList.remove("tabSelectedColor"));
+    asideAllDivs.forEach((d) => d.classList.remove("tabSelectedColor"));
     thisweekBtn.classList.add("tabSelectedColor");
     listHeader.innerText = "This Week";
 
@@ -146,9 +127,14 @@ export const toggleBtwnTabs = () => {
 
   //Inbox tasks
   inboxBtn.addEventListener("click", () => {
+    let aside = document.querySelector("aside");
+    let asideAllButtons = aside.querySelectorAll("button");
+    let asideAllDivs = aside.querySelectorAll("div");
+    asideAllButtons.forEach((b) => b.classList.remove("tabSelectedColor"));
+    asideAllDivs.forEach((d) => d.classList.remove("tabSelectedColor"));
     inboxBtn.classList.add("tabSelectedColor");
-    thisweekBtn.classList.remove("tabSelectedColor");
-    todayBtn.classList.remove("tabSelectedColor");
+    // thisweekBtn.classList.remove("tabSelectedColor");
+    // todayBtn.classList.remove("tabSelectedColor");
     listHeader.innerText = "Inbox";
     console.log(listContainer);
 
@@ -166,4 +152,7 @@ export const toggleBtwnTabs = () => {
     }
     taskslistLocalStorage();
   });
+
+  //Select Project Task
+  selectProjectTask();
 };
