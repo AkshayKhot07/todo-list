@@ -1,4 +1,5 @@
 import { taskslistLocalStorage } from "./taskslistLS";
+import { tasks } from "./tasks.js";
 
 export const projectTasksFn = () => {
   let projectsTaskList = document.querySelector(".projects-task-list");
@@ -26,7 +27,7 @@ export const projectTasksFn = () => {
 
   let projectsTaskModal = `
   <div class="projects-task-modal">
-   <input type="text" class="projects-task-input" />
+   <input type="text" class="projects-task-input"/>
    <buttton class="projects-task-addBtn">Add</buttton>
    <buttton class="projects-task-cancelBtn">Cancel</buttton>
   </div>
@@ -81,8 +82,13 @@ export const projectTasksFn = () => {
     let projectsTaskInput = document.querySelector(".projects-task-input");
 
     projectsTaskAdd.addEventListener("click", () => {
-      let projectsTaskInputValue = projectsTaskInput.value;
-      if (projectsTaskInputValue == "") return;
+      let projectsTaskInputValue = projectsTaskInput.value.trim();
+      const regex = /[a-zA-Z0-9]/;
+
+      if (!projectsTaskInputValue.match(regex)) {
+        projectsTaskInput.placeholder = "Enter atleast 1 char or number";
+        return;
+      }
       projTaskArr.push(projectsTaskInputValue);
       console.log(projTaskArr);
 
@@ -193,6 +199,25 @@ export function selectProjectTask() {
         let currProjectTask = projTask;
         currProjectTask.classList.add("tabSelectedColor");
         console.log(currProjectTask);
+        let currProjectTaskText = currProjectTask.firstElementChild.innerText
+          .replace("📑", "")
+          .trim();
+        console.log(currProjectTaskText);
+        let listContainer = document.querySelector(".list-container");
+        let listHeader = document.querySelector(".list-header");
+        listContainer.innerHTML = "";
+        listHeader.innerText = currProjectTaskText;
+        //Check on LS first
+        // tasks.render(listContainer);
+
+        let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+        tasksList.projects.forEach((o) => {
+          if (o.name == currProjectTaskText && o.tasks.length > 0) {
+            tasks.renderTasksMainContainer(o.tasks);
+          } else if (o.name == currProjectTaskText && o.tasks.length == 0) {
+            tasks.render(listContainer);
+          }
+        });
       }
     });
   });

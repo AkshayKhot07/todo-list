@@ -19,19 +19,41 @@ export const tasks = {
   },
 
   taskAdded: (obj) => {
+    console.log(obj);
     console.log(`TASKS: ${Object.values(obj)[0]} was added`);
     // let list = new Set(tasks.list);
+
+    let projectsTaskList = document.querySelector(".projects-task-list");
+    let allProjectsTasks = Array.from(
+      projectsTaskList.querySelectorAll(".projects-task")
+    );
+    allProjectsTasks.forEach((projTask) => {
+      if (projTask.classList.contains("tabSelectedColor")) {
+        console.log("Projects task tab selectedcolor");
+        let currProjectTaskText = projTask.firstElementChild.innerText
+          .replace("📑", "")
+          .trim();
+        console.log(currProjectTaskText);
+        console.log(obj);
+        // console.log(projTask);
+        let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+        tasksList.projects.forEach((o) => {
+          if (o.name == currProjectTaskText) {
+            o.tasks.push(obj);
+          }
+          localStorage.setItem("tasksList", JSON.stringify(tasksList));
+        });
+      }
+    });
+
     let list = tasks.list;
     list.push(obj);
-
     let filteredList = list.filter(
       (tag, index, array) =>
         array.findIndex((t) => t.task == tag.task && t.date == tag.date) ==
         index
     );
-
     tasks.list = filteredList;
-
     console.log(filteredList);
 
     // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
@@ -81,12 +103,33 @@ export const tasks = {
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);
 
+    // function renderTasksMainContainer(tasksList) {}
+    tasks.renderTasksMainContainer(tasks.list);
+
+    //Projects section tasks render on Main Container
+    allProjectsTasks.forEach((projTask) => {
+      if (projTask.classList.contains("tabSelectedColor")) {
+        let currProjectTaskText = projTask.firstElementChild.innerText
+          .replace("📑", "")
+          .trim();
+        let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+        tasksList.projects.forEach((o) => {
+          if (o.name == currProjectTaskText) {
+            tasks.renderTasksMainContainer(o.tasks);
+          }
+        });
+      }
+    });
+  },
+
+  renderTasksMainContainer: (tasksList) => {
     let ul = document.querySelector(".list-container");
     ul.innerHTML = "";
     let df = document.createDocumentFragment();
     let df2 = document.createDocumentFragment();
 
-    tasks.list.forEach((obj) => {
+    //tasks.list
+    tasksList.forEach((obj) => {
       let li = document.createElement("li");
       tasks.taskElement(obj, li);
       df.appendChild(li);
