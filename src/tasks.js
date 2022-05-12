@@ -165,17 +165,6 @@ export const tasks = {
     let taskDate = ev.target.closest("li").querySelector(".taskDate").innerText;
     console.log(taskText);
     console.log(taskDate);
-    // console.log(`TEST: ${task}`);
-
-    // tasks.list = tasks.list.filter((tsk) => {
-    //   console.log(
-    //     `${Object.values(tsk)[0].trim()} and ${Object.values(tsk)[1].trim()}`
-    //   );
-    //   return (
-    //     Object.values(tsk)[0].trim() !== taskText.trim() &&
-    //     Object.values(tsk)[1].trim() !== taskDate.trim()
-    //   );
-    // });
 
     tasks.list = tasks.list.filter(
       // (t) => !(t.task == taskText && t.date == taskDate)
@@ -194,25 +183,19 @@ export const tasks = {
     projArr.forEach((obj) => {
       if (obj.name == "Inbox") {
         obj.tasks = tasks.list;
+      } else if (obj.name !== "Inbox") {
+        let objsArr = obj.tasks;
+        objsArr = objsArr.filter(
+          (objitem) =>
+            objitem.task.concat(objitem.date) !== taskText.concat(taskDate)
+        );
+        console.log(objsArr);
+        console.log(obj);
+        obj.tasks = objsArr;
       }
     });
     localStorage.setItem("tasksList", JSON.stringify(tasksList));
 
-    /*
-    //Revamp
-    localStorage.setItem(
-      "tasksList",
-      JSON.stringify({
-        projects: [
-          {
-            name: "Inbox",
-            tasks: tasks.list,
-          },
-        ],
-      })
-    );
-    //Revamp
-    */
     console.log(`TASKS: taskDeleted ${taskText}`);
     pubsub.publish("taskDeleted", tasks.list);
   },
