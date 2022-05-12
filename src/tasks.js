@@ -231,6 +231,7 @@ export const tasks = {
       // tasks.taskElement(textArea, li).li;
       if (textArea.value.match(regex)) {
         // tasks.taskElement(textArea, li)
+
         let objtextArea = { textArea, date: datePickerValue };
         console.log(objtextArea);
         tasks.taskElement(objtextArea, li);
@@ -297,57 +298,43 @@ export const tasks = {
       }
       //// Edit Task date on thisweek's tab
 
-      /* Previous Code
-      let listContainer = document.querySelector(".list-container");
-      let allTasks = Array.from(listContainer.querySelectorAll("p"));
-      let allTasksDates = Array.from(
-        listContainer.querySelectorAll(".taskDate")
-      );
-
-      tasks.list = [];
-
-      allTasks.forEach((task, i) =>
-        tasks.list.push({
-          task: task.innerText,
-          date: allTasksDates[i].textContent,
-        })
-      );
-      */
-
+      //Edit task for Inbox(Default) tasks
       console.log(tasks.list);
-
       tasks.list.forEach((obj) => {
         if (obj.task === taskText && obj.date === taskDate.textContent) {
           obj.task = textArea.value;
           obj.date = datePickerValue;
         }
       });
-
       console.log(tasks.list);
+
       // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
       let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+      let listHeader = document.querySelector(".list-header").textContent;
+      let objtextArea = { textArea, date: datePickerValue };
+      console.log(listHeader);
       let projArr = tasksList.projects;
       projArr.forEach((obj) => {
         if (obj.name == "Inbox") {
           obj.tasks = tasks.list;
         }
+        //Edit respective task for respective project
+        else if (obj.name == listHeader) {
+          let objTasksArr = obj.tasks;
+          objTasksArr.forEach((t) => {
+            if (
+              t.task == Object.values(objtextArea)[0].innerText &&
+              t.date == date
+            ) {
+              t.task = Object.values(objtextArea)[0].value;
+              t.date = Object.values(objtextArea)[1];
+            }
+          });
+          console.log(Object.values(objtextArea)[0].innerText);
+          console.log(Object.values(objtextArea)[1]);
+        }
       });
       localStorage.setItem("tasksList", JSON.stringify(tasksList));
-      /*
-      //Revamp
-      localStorage.setItem(
-        "tasksList",
-        JSON.stringify({
-          projects: [
-            {
-              name: "Inbox",
-              tasks: tasks.list,
-            },
-          ],
-        })
-      );
-      //Revamp
-      */
     });
 
     let cancelTaskBtn = document.querySelector(".cancelTaskBtn");
