@@ -207,9 +207,8 @@ export function selectProjectTask() {
         let listHeader = document.querySelector(".list-header");
         listContainer.innerHTML = "";
         listHeader.innerText = currProjectTaskText;
-        //Check on LS first
-        // tasks.render(listContainer);
 
+        //Check on LS first
         let tasksList = JSON.parse(localStorage.getItem("tasksList"));
         tasksList.projects.forEach((o) => {
           if (o.name == currProjectTaskText && o.tasks.length > 0) {

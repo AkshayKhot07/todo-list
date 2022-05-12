@@ -21,8 +21,8 @@ export const tasks = {
   taskAdded: (obj) => {
     console.log(obj);
     console.log(`TASKS: ${Object.values(obj)[0]} was added`);
-    // let list = new Set(tasks.list);
 
+    //Projects section - pushing tasks under respective project
     let projectsTaskList = document.querySelector(".projects-task-list");
     let allProjectsTasks = Array.from(
       projectsTaskList.querySelectorAll(".projects-task")
@@ -46,6 +46,7 @@ export const tasks = {
       }
     });
 
+    //task object respective of projects or default(Inbox) section is pushed into the list(Array)
     let list = tasks.list;
     list.push(obj);
     let filteredList = list.filter(
@@ -56,9 +57,24 @@ export const tasks = {
     tasks.list = filteredList;
     console.log(filteredList);
 
-    // localStorage.setItem("tasksList", JSON.stringify(tasks.list));
-    // localStorage.setItem("tasksList", JSON.stringify(filteredList));
-    //Revamp
+    //Projects section tasks filtered from default(Inbox) tasks
+    let tasksList = JSON.parse(localStorage.getItem("tasksList"));
+    tasksList.projects.forEach((o) => {
+      if (o.name !== "Inbox") {
+        let objsArr = o.tasks;
+        objsArr.forEach((objitem) => {
+          console.log(objitem.task.concat(objitem.date));
+          let objitemconcat = objitem.task.concat(objitem.date);
+          filteredList = filteredList.filter(
+            (eachobj) => eachobj.task.concat(eachobj.date) !== objitemconcat
+          );
+          console.log(filteredList);
+          tasks.list = filteredList;
+        });
+      }
+    });
+
+    //Inbox (Default) tasks set or pushed into LS
     let inboxBtn = document.querySelector(".inbox-btn");
     if (inboxBtn.classList.contains("tabSelectedColor")) {
       let tasksList = JSON.parse(localStorage.getItem("tasksList"));
@@ -98,12 +114,13 @@ export const tasks = {
         localStorage.setItem("tasksList", JSON.stringify(tasksList));
       }
     }
-    //Revamp
 
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);
 
     // function renderTasksMainContainer(tasksList) {}
+
+    //Inbox (Default) tasks render on Main Container
     tasks.renderTasksMainContainer(tasks.list);
 
     //Projects section tasks render on Main Container
