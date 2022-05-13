@@ -161,7 +161,7 @@ export const tasks = {
     let item = ev.target.closest("input[type=checkbox]");
     if (!item) return;
     // let task = item.parentElement.innerText;
-    let taskText = item.nextElementSibling.innerText;
+    let taskText = item.nextElementSibling.innerText.split("(")[0].trim();
     let taskDate = ev.target.closest("li").querySelector(".taskDate").innerText;
     console.log(taskText);
     console.log(taskDate);

@@ -190,7 +190,10 @@ export function selectProjectTask() {
   allProjectsTasks.forEach((projTask) => {
     let projectTask = projTask;
     projectTask.addEventListener("click", (e) => {
-      if (e.target.classList.contains("projects-task-text")) {
+      if (
+        e.target.classList.contains("projects-task") ||
+        e.target.classList.contains("projects-task-text")
+      ) {
         let aside = document.querySelector("aside");
         let asideAllButtons = aside.querySelectorAll("button");
         let asideAllDivs = aside.querySelectorAll("div");

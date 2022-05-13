@@ -37,36 +37,30 @@ export const toggleBtwnTabs = () => {
 
     let tasksList = JSON.parse(localStorage.getItem("tasksList"));
     console.log(tasksList);
-    /*
-    let filteredList = tasksList.filter((t) => {
-      return t.date == todayDate;
-    });
-    console.log(filteredList);
-    for (let i = 0; i < filteredList.length; i++) {
-      let li = document.createElement("li");
-      tasks.taskElement(filteredList[i], li);
-      listContainer.appendChild(li);
-    }
-    */
-    //Revamp
     let lsObjArr = tasksList.projects;
     lsObjArr.forEach((obj) => {
       // console.log(obj);
-      if (obj.name == "Inbox") {
-        // console.log(...obj.tasks);
-        let multasks = [...obj.tasks];
-        // console.log(multasks);
+      // if (obj.name == "Inbox") {
+      // console.log(...obj.tasks);
+      let multasks = [...obj.tasks.concat(obj.name)];
+      console.log(multasks);
+      console.log(multasks[multasks.length - 1]);
 
-        let filteredObj = multasks.filter((t) => {
-          return t.date == todayDate;
-        });
-        // console.log(filteredObj);
-        for (let i = 0; i < filteredObj.length; i++) {
-          let li = document.createElement("li");
-          tasks.taskElement(filteredObj[i], li);
-          listContainer.appendChild(li);
-        }
+      let filteredObj = multasks.filter((t) => {
+        return t.date == todayDate;
+      });
+
+      filteredObj.forEach((o) => {
+        o.task = `${o.task} (${multasks[multasks.length - 1]})`;
+      });
+
+      console.log(filteredObj);
+      for (let i = 0; i < filteredObj.length; i++) {
+        let li = document.createElement("li");
+        tasks.taskElement(filteredObj[i], li);
+        listContainer.appendChild(li);
       }
+      // }
     });
   });
 
@@ -91,21 +85,27 @@ export const toggleBtwnTabs = () => {
 
     let tasksList = JSON.parse(localStorage.getItem("tasksList"));
     console.log(tasksList);
-
-    /*
-    let filteredList = tasksList.filter((t) => {
-      return whichWeek(t.date) == currWeek;
-    });
-    console.log(filteredList);
-    for (let i = 0; i < filteredList.length; i++) {
-      let li = document.createElement("li");
-      tasks.taskElement(filteredList[i], li);
-      listContainer.appendChild(li);
-    }
-    */
-    //Revamp
     let lsObjArr = tasksList.projects;
     lsObjArr.forEach((obj) => {
+      let multasks = [...obj.tasks.concat(obj.name)];
+      console.log(multasks);
+      console.log(multasks[multasks.length - 1]);
+
+      let filteredObj = multasks.filter((t) => {
+        return whichWeek(t.date) == currWeek;
+      });
+
+      filteredObj.forEach((o) => {
+        o.task = `${o.task} (${multasks[multasks.length - 1]})`;
+      });
+
+      console.log(filteredObj);
+      for (let i = 0; i < filteredObj.length; i++) {
+        let li = document.createElement("li");
+        tasks.taskElement(filteredObj[i], li);
+        listContainer.appendChild(li);
+      }
+      /*
       // console.log(obj);
       if (obj.name == "Inbox") {
         // console.log(...obj.tasks);
@@ -122,6 +122,7 @@ export const toggleBtwnTabs = () => {
           listContainer.appendChild(li);
         }
       }
+      */
     });
   });
 
