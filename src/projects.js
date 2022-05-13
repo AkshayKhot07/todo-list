@@ -76,6 +76,9 @@ export const projectTasksFn = () => {
         projectsTaskList.innerHTML = "";
         projectsTaskList.appendChild(addProjectBtn);
       }
+      //Select Project Task
+      projectHighlight();
+      selectProjectTask();
     });
 
     let projectsTaskAdd = document.querySelector(".projects-task-addBtn");
@@ -125,14 +128,18 @@ export const projectTasksFn = () => {
             let projectsTaskCancelBtn = projtask;
             projectsTaskCancelBtn.addEventListener("click", deleteProjectsTask);
           });
-          //Select Project Task
-          selectProjectTask();
         }
         projectsTaskList.appendChild(addProjectBtn);
       } else {
         projectsTaskList.appendChild(addProjectBtn);
       }
+      //Select Project Task
+      projectHighlight();
+      selectProjectTask();
     });
+    //Select Project Task
+    projectHighlight();
+    selectProjectTask();
   });
 
   //Delete Projects Task
@@ -173,12 +180,12 @@ export const projectTasksFn = () => {
       console.log(tasksList);
       localStorage.setItem("tasksList", JSON.stringify(tasksList));
       //Select Project Task
-      selectProjectTask();
+      // selectProjectTask();
     }
   }
 
   //Select projects Task
-  selectProjectTask();
+  // selectProjectTask();
 };
 
 export function selectProjectTask() {
@@ -241,6 +248,17 @@ export function checkNameNotInbox(obj) {
   projArr.forEach((obj) => {
     if (obj.name !== "Inbox") {
       return true;
+    }
+  });
+}
+
+function projectHighlight() {
+  let listHeader = document.querySelector(".list-header").innerText;
+  let aside = document.querySelector("aside");
+  let asideAllDivs = aside.querySelectorAll("div");
+  asideAllDivs.forEach((div) => {
+    if (div.innerText.replace("📑", "").trim() == listHeader) {
+      div.classList.add("tabSelectedColor");
     }
   });
 }

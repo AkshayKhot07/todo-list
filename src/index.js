@@ -3,6 +3,7 @@ import { taskslistLocalStorage } from "./taskslistLS";
 import { toggleBtwnTabs } from "./tooglebtwntabs";
 import { projectTasks, projectTasksFn } from "./projects.js";
 import { projectsTaskslistLocalStorage } from "./projectstaskslistLS.js";
+import { selectProjectTask } from "./projects.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   let listContainer = document.querySelector(".list-container");
@@ -16,4 +17,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   projectsTaskslistLocalStorage();
   projectTasksFn();
+  selectProjectTask();
 });
