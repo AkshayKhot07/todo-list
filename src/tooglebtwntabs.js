@@ -149,6 +149,7 @@ export const toggleBtwnTabs = () => {
         if (obj.name == "Inbox" && obj.tasks.length == 0) {
           listContainer.appendChild(addTaskModal().li);
         } else if (obj.name !== "Inbox") {
+          listContainer.innerHTML = "";
           listContainer.appendChild(addTaskModal().li);
         }
       });
