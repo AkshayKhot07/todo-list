@@ -146,13 +146,16 @@ export const toggleBtwnTabs = () => {
       listContainer.appendChild(addTaskModal().li);
     } else {
       tasksList.projects.forEach((obj) => {
-        if (obj.name == "Inbox" && obj.tasks.length == 0) {
+        if (obj.name !== "Inbox") {
+          listContainer.innerHTML = "";
           listContainer.appendChild(addTaskModal().li);
-        } else if (obj.name !== "Inbox" && obj.tasks.length == 0) {
-          listContainer.appendChild(addTaskModal().li);
-        } else if (obj.name !== "Inbox") {
+        } else if (obj.name == "Inbox" && obj.tasks.length == 0) {
+          listContainer.innerHTML = "";
           listContainer.appendChild(addTaskModal().li);
         }
+        // else if (obj.name !== "Inbox" && obj.tasks.length == 0) {
+        //   listContainer.appendChild(addTaskModal().li);
+        // }
       });
     }
     taskslistLocalStorage();
