@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Open+Sans&family=Poppins:wght@200&family=Roboto:wght@100;300&family=Water+Brush&display=swap");
 
+:root {
+  --sidebar-width: 250px;
+}
+
 * {
   margin: 0;
   font-family: "Open Sans", sans-serif;
@@ -54,13 +58,14 @@ header span {
   column-gap: 10px;
   align-items: center;
   margin: 15px 30px 15px 0px;
-  margin-left: auto;
+  margin-left: 20px;
   letter-spacing: 3px;
 }
 
 header .menu-icon {
   margin: 15px 0px 15px 20px;
   cursor: pointer;
+  display: none;
 }
 
 main {
@@ -273,13 +278,17 @@ aside .projects-task {
   visibility: visible;
 }
 
-/* Hide Sidebar or Aside */
-.hideSidebar {
-  display: none;
-}
-
 aside {
   width: 250px;
+}
+
+.taskEditBtn {
+  height: 25px;
+  width: 40px;
+}
+
+.exit {
+  display: none;
 }
 
 /* Media queries */
@@ -297,6 +306,20 @@ aside {
     flex-grow: 1;
   }
 
+  header .menu-icon {
+    margin: 15px 0px 15px 20px;
+    cursor: pointer;
+    display: block;
+  }
+
+  /* header .menu-icon input {
+    display: none;
+  } */
+
+  header span {
+    margin-left: auto;
+  }
+
   /* .container {
     display: flex;
     flex-direction: column;
@@ -311,8 +334,35 @@ aside {
   }
 
   aside {
+    /* display: none; */
+    width: var(--sidebar-width);
+    position: absolute;
+    height: 100%;
+    left: -70%;
+    z-index: 1;
+    transition: left 0.5s ease-in-out;
+  }
+
+  .exit {
+    display: inline;
+    cursor: pointer;
+    font-weight: 800;
+    color: black;
+    float: right;
+    padding: 1.1rem;
+  }
+
+  #toggle {
     display: none;
   }
+
+  /* #toggle:checked ~ aside {
+    left: 0;
+  }
+
+  #toggle:checked ~ main {
+    background-color: rgba(0, 0, 0, 0.5);
+  } */
 
   main {
     padding: 0;
@@ -344,9 +394,5 @@ aside {
 
   .taskTextDate {
     width: 310px;
-  }
-
-  .hideSidebar {
-    display: block;
   }
 }
