@@ -19,6 +19,21 @@ export const tasks = {
   },
 
   taskAdded: (obj) => {
+    //initialize LS
+    if (!JSON.parse(localStorage.getItem("tasksList"))) {
+      localStorage.setItem(
+        "tasksList",
+        JSON.stringify({
+          projects: [
+            {
+              name: "Inbox",
+              tasks: [],
+            },
+          ],
+        })
+      );
+    }
+
     console.log(obj);
     console.log(`TASKS: ${Object.values(obj)[0]} was added`);
 
@@ -114,6 +129,7 @@ export const tasks = {
         localStorage.setItem("tasksList", JSON.stringify(tasksList));
       }
     }
+    //Inbox (Default) tasks set or pushed into LS
 
     // console.log(`TASKS: tasksUpdated the list`);
     // pubsub.publish("tasksUpdated", tasks.list);
