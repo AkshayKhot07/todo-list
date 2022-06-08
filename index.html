@@ -16,18 +16,22 @@
   </head>
   <body>
     <div class="container">
+
       <header>
-        <img
-          src="../src/assets/menu-icon.png"
-          alt="menu icon"
-          class="menu-icon"
-        />
+        <div class="menu-icon">
+          <input type='checkbox' id='toggle'></input>
+          <label for='toggle' class='button'>
+            <img src="../src/assets/menu-icon.png" alt="menu icon" />
+          </label>
+        </div>
         <span>
           <img src="../src/assets/todo-list.png" alt="logo" />
           <h2>Todo List</h2>
         </span>
       </header>
-      <aside>
+
+      <aside class="leftbar">
+        <label for='toggle' class='exit'>X</label>
         <div class="default-task-list">
           <button class="inbox-btn">
             <i class="fa-solid fa-inbox"></i> Inbox
