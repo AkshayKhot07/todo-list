@@ -1,6 +1,6 @@
 # todo-list
 
-##Learning Outcomes
+## Learning Outcomes
 
 - CRUD Functionalities
 - PubSub design pattern
